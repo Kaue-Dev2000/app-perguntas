@@ -4,20 +4,19 @@ import './questao.dart';
 
 main() => runApp(PerguntaApp());
 
-class _PerguntaAppState extends State<PerguntaApp> {
+class PerguntaApp extends StatefulWidget{
+
+  @override
+  PerguntaAppState createState() {
+    return PerguntaAppState();
+  }
+}
+
+class PerguntaAppState extends State<PerguntaApp> {
 
   var _perguntaSelecionada = 0;
 
-  void _responder() {
-    setState(() {
-    _perguntaSelecionada++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context){
-
-    final List<Map<String, Object>> perguntas = [
+  final List<Map<String, Object>> _perguntas = const[
       {
         'texto': 'Qual é a sua cor favorita?',
         'resposta': ['Preto', 'Vermelho', 'Verde', 'Branco',],
@@ -32,30 +31,33 @@ class _PerguntaAppState extends State<PerguntaApp> {
       },
   ];
 
+  void _responder() {
+    setState(() {
+    _perguntaSelecionada++;
+    });
+  }
+
+  bool get _temPerguntaSelecionada{
+    return _perguntaSelecionada < _perguntas.length;
+  }
+
+  @override
+  Widget build(BuildContext context){
+    
+  List<String>? resposta = _temPerguntaSelecionada ? _perguntas[_perguntaSelecionada].cast()['resposta'] : null;
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Perguntas'),
         ),
-        body: Column(
-          children: [
-            Questao(perguntas[_perguntaSelecionada]['texto'].toString()),
-            Resposta('Resposta 1', _responder),
-            Resposta('Resposta 2', _responder),
-            Resposta('Resposta 3', _responder),
+        body: _temPerguntaSelecionada ? Column(
+          children: <Widget>[
+            Questao(_perguntas[_perguntaSelecionada]['texto'].toString()),
+            ...resposta!.map((t) => Resposta(t, _responder)).toList(),
           ],
-        ),
+        ) : null,
       ),
     );
   }
-
-}
-
-class PerguntaApp extends StatefulWidget{
-
-  @override
-  _PerguntaAppState createState() {
-    return _PerguntaAppState();
-  }
-
 }
