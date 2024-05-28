@@ -47,16 +47,30 @@ class PerguntaAppState extends State<PerguntaApp> {
   List<String>? resposta = _temPerguntaSelecionada ? _perguntas[_perguntaSelecionada].cast()['resposta'] : null;
 
     return MaterialApp(
+
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.dark
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Perguntas'),
+          foregroundColor: Colors.white,
         ),
         body: _temPerguntaSelecionada ? Column(
           children: <Widget>[
             Questao(_perguntas[_perguntaSelecionada]['texto'].toString()),
-            ...resposta!.map((t) => Resposta(t, _responder)).toList(),
+            ...resposta!.map((t) => Resposta(t, _responder)),
           ],
-        ) : null,
+        ) : const Center(
+          child: Text(
+            'Parabéns!',
+            style: TextStyle(
+              fontSize: 28,
+            ),
+          ),
+        ),
       ),
     );
   }
