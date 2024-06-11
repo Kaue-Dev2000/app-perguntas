@@ -15,41 +15,44 @@ class PerguntaApp extends StatefulWidget{
 class PerguntaAppState extends State<PerguntaApp> {
 
   var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
 
   final List<Map<String, Object>> _perguntas = const[
       {
         'texto': 'Qual é a sua cor favorita?',
         'resposta': [
-          {'texto': 'Preto', 'nota': 10},
-          {'texto': 'Vermelho', 'nota': 5},
-          {'texto': 'Verde', 'nota': 3},
-          {'texto': 'Branco', 'nota': 1},
+          {'texto': 'Preto', 'pontuacao': 10},
+          {'texto': 'Vermelho', 'pontuacao': 5},
+          {'texto': 'Verde', 'pontuacao': 3},
+          {'texto': 'Branco', 'pontuacao': 1},
         ]
       },
       {
         'texto': 'Qual é o seu animal favorito?',
         'resposta': [
-          {'texto': 'Coelho', 'nota': 10},
-          {'texto': 'Cobra', 'nota': 10},
-          {'texto': 'Elefante', 'nota': 10},
-          {'texto': 'Leão','nota': 10},
+          {'texto': 'Coelho', 'pontuacao': 10},
+          {'texto': 'Cobra', 'pontuacao': 5},
+          {'texto': 'Elefante', 'pontuacao': 3},
+          {'texto': 'Leão','pontuacao': 1},
         ],
       },
       {
         'texto': 'Qual é o seu instrutor favorito?',
         'resposta': [
-          {'texto': 'Maria', 'nota': 10,},
-          {'texto': 'João', 'nota': 5,},
-          {'texto': 'Léo', 'nota': 3,},
-          {'texto': 'Pedro', 'nota': 1,},
+          {'texto': 'Maria', 'pontuacao': 10,},
+          {'texto': 'João', 'pontuacao': 5,},
+          {'texto': 'Léo', 'pontuacao': 3,},
+          {'texto': 'Pedro', 'pontuacao': 1,},
         ],
       },
   ];
 
-  void _responder() {
+  void _onResponder(int pontuacao) {
     setState(() {
     _perguntaSelecionada++;
+    _pontuacaoTotal += pontuacao;
     });
+    print(_pontuacaoTotal);
   }
 
   bool get _temPerguntaSelecionada{
@@ -74,8 +77,8 @@ class PerguntaAppState extends State<PerguntaApp> {
         body: _temPerguntaSelecionada ? Questionario(
           perguntaSelecionada:  _perguntaSelecionada,
           perguntas: _perguntas,
-          onResponder:  _responder
-        ) : Resultado(),
+          onResponder:  _onResponder
+        ) : Resultado(_pontuacaoTotal),
       ),
     );
   }
